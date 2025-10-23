@@ -14,6 +14,7 @@ void *inc_gv(void *ptr)
 		for (j=0;j<5000000;j++);
 		printf("%s:", str);
 		printf(" %d.", global_var);
+        printf("\n");
 		fflush(stdout);
 	}
 }
@@ -23,8 +24,8 @@ int main ()
 	pthread_t threadA, threadB;
 	int tAret, tBret;
 
-	char * str1 = "tA";
-	char * str2 = "tB";
+	char * str1 = "[A]: ";
+	char * str2 = "[B]" ;
 
 //	tAret = pthread_create(&threadA, NULL, inc_gv, NULL);
 //	tBret = pthread_create(&threadB, NULL, inc_gv, NULL);
