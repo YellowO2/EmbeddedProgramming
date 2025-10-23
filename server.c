@@ -76,7 +76,6 @@ int main(int argc, char *argv[]) {
     clilen = sizeof(cli_addr);
 
     // 2. This is the main server loop. Use while(1) for a real server.
-    //    For your lab, we can use a for-loop to serve a few clients and then stop.
     int i = 0;
     for (i = 0; i < 3; i++) { // serve 3 clients
         // Wait for a client to connect. This call BLOCKS until a client connects.

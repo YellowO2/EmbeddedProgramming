@@ -46,20 +46,25 @@ int main(int argc, char *argv[ ])
 	
 	printf("Please enter a number: ");
 	fgets(buffer,255,stdin);
+    
+    // Send the number to the server
+    printf("Sending: %s", buffer);
+    n = write(sockfd, buffer, strlen(buffer));
+    if (n < 0) 
+        error("ERROR writing to socket");
 
-	// srand(time(0));
-	// int r = (rand() % 100);
-	// memset(buffer,0,256); 
-	// sprintf(buffer, "%d", r);
-	// printf("The number sent is: %s\n",buffer);
-	// n = write(sockfd,buffer,strlen(buffer));
-	// if (n < 0)
-	// 	error("ERROR writing to socket");
-	
-	// n = read(sockfd,buffer,255);
-	// if (n < 0)
-	// 	error("ERROR reading from socket");
-	
-	printf("%s\n",buffer);
-	return 0;
+    // --- THIS IS THE IMPORTANT PART ---
+    // WIPE THE BUFFER CLEAN before waiting for the reply.
+    memset(buffer, 0, 256); 
+
+    // Now, read the reply from the server
+    n = read(sockfd, buffer, 255);
+    if (n < 0) 
+        error("ERROR reading from socket");
+
+    // Print whatever the server sent back
+    printf("Server replied: %s\n", buffer);
+
+    close(sockfd);
+    return 0;
 }
