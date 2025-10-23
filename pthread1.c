@@ -1,28 +1,30 @@
-// pthread1.c
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
 
-void* worker(void* arg) {
-    const char* name = (const char*)arg;
-    for (int i = 0; i < 5; i++) {
-        printf("[%s] i=%d\n", name, i);
-        usleep(100000); // 0.1s so you can see interleaving
-    }
+void* print_message(void *ptr)
+{
+    char* text;
+    text = (char*) ptr;
+
+    printf("%s\n", text);
     return NULL;
 }
 
-int main() {
-    pthread_t t1, t2;
+int main()
+{
+    pthread_t thread1, thread2;
+    int T1ret, T2ret;
 
-    // create two threads
-    pthread_create(&t1, NULL, worker, "T1");
-    pthread_create(&t2, NULL, worker, "T2");
+    char* str1 = "I am thread 1";
+    char* str2 = "I am thread 2";
 
-    // wait for them to finish
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
+    T1ret = pthread_create(&thread1, NULL, print_message, (void*) str1);
+    T2ret = pthread_create(&thread2, NULL, print_message, (void*) str2);
 
-    printf("[main] done\n");
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+
+    printf("thread 1 return: %d, thread 2 return: %d\n", T1ret, T2ret);
     return 0;
 }
